@@ -1,0 +1,26 @@
+:root {
+    --text-color: #fff;
+    --text-highlight: #4fe0b0;
+    --green-background: #164032;
+    --green-border: #3eb38c;
+    --red-background: #661917;
+    --red-border: #e53935;
+    --blue-background-main: #141c3a;
+    --blue-background-secordary: #2d52cc;
+    --code-block-background: #211e2f;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--blue-background-main);
+    color: var(--text-color);
+}
+
+header, footer {
+    background-color: var(--blue-background-secordary);
+}

@@ -133,26 +133,23 @@ let questions = [
 
 // generates and populates content for main element on landing page
 const createIntroEl = function() {
-    stringThing = `
-        <div>
-            <h2>Welcome to the Quizzinator</h2>
-            <h3>Test your skills. Compete With Friends. Destroy Your Enemies.</h3>
-            <p>In the quizzinator, you will be tested on your JavaScipt knowledge. Answer each question to reach the end and receive a high score!</p>
-            <h3>Rules:</h3>
-            <ul>
-                <li>There are 5 questions. You must complete each question to finish the round.</li>
-                <li>You have 120 seconds to finish the round.</li>
-                <li>15 seconds will be deducted from your time for each wrong answer you select.</li>
-                <li>Your high score will equal the amount of time left after completing all 5 questions.</li>
-                <li>Click 'Start Quiz' to begin your next trial.</li>
-            </ul>
-            <button class="btn" id="start-button" type="button">Start Quiz</button>
-        </div>
-    `
-
     let mainDivEl = document.createElement("div");
-    mainDivEl.innerHTML = stringThing;
+    mainDivEl.innerHTML = `
+        <h2>Welcome to the Quizzinator</h2>
+        <h3>Test your skills. Compete With Friends. Destroy Your Enemies.</h3>
+        <p>In the quizzinator, you will be tested on your JavaScipt knowledge. Answer each question to reach the end and receive a high score!</p>
+        <h3>Rules:</h3>
+        <ul>
+            <li>There are 5 questions. You must complete each question to finish the round.</li>
+            <li>You have 120 seconds to finish the round.</li>
+            <li>15 seconds will be deducted from your time for each wrong answer you select.</li>
+            <li>Your high score will equal the amount of time left after completing all 5 questions.</li>
+            <li>Click 'Start Quiz' to begin your next trial.</li>
+        </ul>
+        <button class="btn" id="start-button" type="button">Start Quiz</button>
+    `;
     mainEl.appendChild(mainDivEl);
+    mainEl.addEventListener("click", startQuizHandler);
 };
 
 // handles function calls on click of start button on landing page
@@ -162,6 +159,7 @@ const startQuizHandler = function() {
 
     if (targetEl.matches("#start-button")) {
         removeMainContent();
+        mainEl.removeEventListener("click", startQuizHandler);
         createQuestionEl();
     }
 
@@ -175,31 +173,87 @@ const removeMainContent = function() {
     previousDivEl.remove();
 };
 
-// generates question content; populates question content to main element
+// removes content from footer element
+const removeFooterContent = function () {
+    let previousDivEl = document.querySelector("footer div");
+    previousDivEl.remove();
+};
+
+// generates question content and populates it to main element
 const createQuestionEl = function() {
     let mainDivEl = document.createElement("div");
     mainDivEl.innerHTML = `
-    <h2>Q1: ${questions[0].question}</h2>
-    <div class='answer-block'>
-        <button class='answer' type='button'>A: ${questions[0].answers[0].answerString}</button>
-        <button class='answer' type='button'>B: ${questions[0].answers[1].answerString}</button>
-        <button class='answer' type='button'>C: ${questions[0].answers[2].answerString}</button>
-        <button class='answer' type='button'>D: ${questions[0].answers[3].answerString}</button>
-    </div>
+        <h2>Q1: ${questions[0].question}</h2>
+        <div class='answer-block'>
+            <button class='answer' type='button'>A: ${questions[0].answers[0].answerString}</button>
+            <button class='answer' type='button'>B: ${questions[0].answers[1].answerString}</button>
+            <button class='answer' type='button'>C: ${questions[0].answers[2].answerString}</button>
+            <button class='answer' type='button'>D: ${questions[0].answers[3].answerString}</button>
+        </div>
     `;
     mainEl.appendChild(mainDivEl);
+    mainEl.addEventListener("click", answersHandler);
 };
 
+// handler for answer buttons
 const answersHandler = function() {
     let targetEl = event.target;
 
     if (targetEl.matches(".answer")) {
         console.log("bruh, it works");
         mainEl.removeEventListener("click", answersHandler);
+        createFooterEl();
     }
 };
 
+// generates footer content that ocntains next question button and answer explainer text
+const createFooterEl = function() {
+    let footerDivEl = document.createElement("div");
+    footerDivEl.innerHTML = `
+        <p>${questions[0].answers[0].answerMessage}</p>
+        <button class='next' type='button'>Next</button>
+    `
+    footerEl.appendChild(footerDivEl);
+    footerEl.addEventListener("click", nextQuestionHandler);
+};
+
+// handler for next question and finish quiz buttons
+const nextQuestionHandler = function() {
+    let targetEl = event.target;
+    
+    if (targetEl.matches(".next")) {
+        questionCounter++;
+        removeFooterContent();
+        removeMainContent();
+        footerEl.removeEventListener("click", nextQuestionHandler);
+        if (questionCounter < 3) {
+            createQuestionEl();
+        } else {
+            createEndEl();
+        }
+    }
+};
+
+// generates quiz end page and populates it to main element
+const createEndEl = function() {
+    let mainDivEl = document.createElement("div");
+    mainDivEl.innerHTML = `
+        <p>This is the final screen</p>
+        <button class='restart' id='restart-button' type='button'>Play Again?</button>
+    `
+    mainEl.appendChild(mainDivEl);
+    mainEl.addEventListener("click", restartQuizHandler);
+};
+
+// handler for restart quiz button
+const restartQuizHandler = function() {
+    let targetEl = event.target;
+
+    if (targetEl.matches("#restart-button")) {
+        removeMainContent();
+        createIntroEl();
+        questionCounter = 0;
+    }
+}
+
 createIntroEl();
-mainEl.addEventListener("click", startQuizHandler);
-mainEl.addEventListener("click", answersHandler);
-footerEl.addEventListener("click", nextQuestionHandler);

@@ -1,6 +1,13 @@
 const mainEl = document.querySelector("main");
 const footerEl = document.querySelector("footer");
 let questionCounter = 0;
+let chosenQuestion;
+let chosenQuestionAnswers;
+let chosenAnswer;
+let numberCorrect = 0;
+let countdownTimer = 75;
+let interval;
+let highScore = {initials: undefined, score: 0};
 
 // object containing information for questions including question string, answer strings, and response message
 let questions = [
@@ -154,17 +161,15 @@ const createIntroEl = function() {
 
 // handles function calls on click of start button on landing page
 const startQuizHandler = function() {
-    // remove main content and add new question (generateQuestion)
     let targetEl = event.target;
 
     if (targetEl.matches("#start-button")) {
         removeMainContent();
         mainEl.removeEventListener("click", startQuizHandler);
+        shuffleArray(questions);
+        startTimer();
         createQuestionEl();
     }
-
-    // add and start timer
-
 };
 
 // removes content from main element
@@ -181,18 +186,23 @@ const removeFooterContent = function () {
 
 // generates question content and populates it to main element
 const createQuestionEl = function() {
+    chosenQuestion = questions[questionCounter];
+    chosenQuestionAnswers = shuffleArray(chosenQuestion.answers);
+
     let mainDivEl = document.createElement("div");
     mainDivEl.innerHTML = `
-        <h2>Q1: ${questions[0].question}</h2>
+        <h2>Q${questionCounter + 1}: ${chosenQuestion.question}</h2>
         <div class='answer-block'>
-            <button class='answer' type='button'>A: ${questions[0].answers[0].answerString}</button>
-            <button class='answer' type='button'>B: ${questions[0].answers[1].answerString}</button>
-            <button class='answer' type='button'>C: ${questions[0].answers[2].answerString}</button>
-            <button class='answer' type='button'>D: ${questions[0].answers[3].answerString}</button>
+            <button class='answer' id='0' type='button'>A: ${chosenQuestionAnswers[0].answerString}</button>
+            <button class='answer' id='1' type='button'>B: ${chosenQuestionAnswers[1].answerString}</button>
+            <button class='answer' id='2' type='button'>C: ${chosenQuestionAnswers[2].answerString}</button>
+            <button class='answer' id='3' type='button'>D: ${chosenQuestionAnswers[3].answerString}</button>
         </div>
     `;
     mainEl.appendChild(mainDivEl);
     mainEl.addEventListener("click", answersHandler);
+
+    reportTimer();
 };
 
 // handler for answer buttons
@@ -200,20 +210,31 @@ const answersHandler = function() {
     let targetEl = event.target;
 
     if (targetEl.matches(".answer")) {
-        console.log("bruh, it works");
         mainEl.removeEventListener("click", answersHandler);
-        createFooterEl();
+        stopTimer();
+        createFooterEl(parseInt(targetEl.id));
     }
 };
 
-// generates footer content that ocntains next question button and answer explainer text
-const createFooterEl = function() {
+// generates footer content that ocntains next question button and answer explainer text of answer at index num of chosenQuestionAnswers
+const createFooterEl = function(num) {
     let footerDivEl = document.createElement("div");
     footerDivEl.innerHTML = `
-        <p>${questions[0].answers[0].answerMessage}</p>
+        <p>${chosenQuestionAnswers[num].answerMessage}</p>
         <button class='next' type='button'>Next</button>
     `
     footerEl.appendChild(footerDivEl);
+
+    if (chosenQuestionAnswers[num].isCorrectAnswer) {
+        numberCorrect++;
+    } else {
+        countdownTimer -= 10;
+        if (countdownTimer <= 0) {
+            return gameOver();
+        }
+        reportTimer();
+    }
+
     footerEl.addEventListener("click", nextQuestionHandler);
 };
 
@@ -226,22 +247,42 @@ const nextQuestionHandler = function() {
         removeFooterContent();
         removeMainContent();
         footerEl.removeEventListener("click", nextQuestionHandler);
-        if (questionCounter < 3) {
+        if (questionCounter < questions.length) {
+            startTimer();
             createQuestionEl();
         } else {
+            document.getElementById("timer").innerHTML = "";
             createEndEl();
         }
     }
 };
 
 // generates quiz end page and populates it to main element
-const createEndEl = function() {
+const createEndEl = function() {    
+    let loadHighScore = localStorage.getItem("highScore");
+    if (loadHighScore) {
+        highScore = JSON.parse(loadHighScore);
+    }
+
+
+    let highScoreString;
+    if (!highScore.score || countdownTimer > highScore.score) {
+        highScore.initials = window.prompt(`Congratulations on finishing with the high score of ${countdownTimer}.\nPlease enter your intials to be memorialized for your heroic performance.`);
+        highScore.score = countdownTimer;
+        highScoreString = `<p>Congratulations! You got the high score of ${countdownTimer} with ${numberCorrect} correct answers.\nThis will surely make history!</p>`;
+    } else if (highScore.score > countdownTimer) {
+        highScoreString = `Congratulations on finishing with ${numberCorrect} correct. Unfortunately, you did not get the highScore.`;
+    }
+    
+
     let mainDivEl = document.createElement("div");
     mainDivEl.innerHTML = `
-        <p>This is the final screen</p>
+        <p>${highScoreString}\nHigh Score: ${highScore.score} set by ${highScore.initials}\nDo you want to have another go?</p>
         <button class='restart' id='restart-button' type='button'>Play Again?</button>
     `
+
     mainEl.appendChild(mainDivEl);
+    localStorage.setItem("highScore", JSON.stringify(highScore));
     mainEl.addEventListener("click", restartQuizHandler);
 };
 
@@ -253,7 +294,56 @@ const restartQuizHandler = function() {
         removeMainContent();
         createIntroEl();
         questionCounter = 0;
+        numberCorrect = 0;
+        countdownTimer = 75;
     }
-}
+};
+
+// shuffle positions of array randomly using Durstenfeld (Fisher-Yates) shuffle
+const shuffleArray = function(arr) {
+    for (let i = arr.length - 1; i > 0; i--) {
+        let j = Math.floor(Math.random() * (i + 1));
+        var temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+    }
+    return arr;
+};
+
+const countdown = function() {
+    countdownTimer--;
+    reportTimer();
+    if (countdownTimer <= 0) {
+        return gameOver();
+    }
+};
+
+const startTimer = function() {
+    interval = setInterval(countdown, 1000);
+};
+
+const stopTimer = function() {
+    clearInterval(interval);
+};
+
+const reportTimer = function() {
+    document.getElementById("timer").innerHTML = countdownTimer;
+};
+
+const gameOver = function() {
+    stopTimer();
+    document.getElementById("timer").innerHTML = "";
+    if (footerEl.hasChildNodes()) {
+        removeFooterContent();
+    };
+    removeMainContent();
+    let mainDivEl = document.createElement("div");
+    mainDivEl.innerHTML = `
+        <p>You ran out of time. Finish the quiz to join the completionists and see the high scores!</p>
+        <button class='restart' id='restart-button' type='button'>Play Again?</button>
+    `;
+    mainEl.appendChild(mainDivEl);
+    mainEl.addEventListener("click", restartQuizHandler);
+};
 
 createIntroEl();

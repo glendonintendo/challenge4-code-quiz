@@ -91,7 +91,7 @@ let questions = [
         answers: [
             {
                 answerString: "window.prompt('This is it!');",
-                answerMessage: "Correct! The .prompt method creates a popup witha text entry and returns the value of the user's input.",
+                answerMessage: "Correct! The .prompt method creates a popup with a text entry and returns the value of the user's input.",
                 isCorrectAnswer: true
             },
             {
@@ -145,7 +145,7 @@ const createIntroEl = function() {
     mainDivEl.innerHTML = `
         <h2 class='welcome'>Welcome to the Quizzinator</h2>
         <h3 class='subtitle'>Test your skills. Compete With Friends. Destroy Your Enemies.</h3>
-        <p class='game-explainer'>In the quizzinator, you will be tested on your JavaScipt knowledge. Answer each question to reach the end and receive a high score!</p>
+        <p class='game-explainer'>In the quizzinator, you will be tested on your JavaScript knowledge. Answer each question to reach the end and receive a high score!</p>
         <div class='rules'>    
             <h3 class='rules-title'>Rules:</h3>
             <ul class='rules-list'>
@@ -220,7 +220,7 @@ const answersHandler = function() {
     }
 };
 
-// generates footer content that ocntains next question button and answer explainer text of answer at index num of chosenQuestionAnswers
+// generates footer content that contains next question button and answer explainer text of answer at index num of chosenQuestionAnswers
 const createFooterEl = function(num) {
     let footerDivEl = document.createElement("div");
     footerDivEl.className = "footer-div";
@@ -361,11 +361,11 @@ const gameOver = function() {
     mainEl.addEventListener("click", restartQuizHandler);
 };
 
-// gets users intials if they get high score; validates that initials are between 1-3 characters
+// gets users initials if they get high score; validates that initials are between 1-3 characters
 const getInitials = function() {
-    highScore.initials = window.prompt(`Congratulations on finishing with the high score of ${countdownTimer}.\nPlease enter your intials to be memorialized for your heroic performance.`);
+    highScore.initials = window.prompt(`Congratulations on finishing with the high score of ${countdownTimer}.\nPlease enter your initials to be memorialized for your heroic performance.`);
     if (!highScore.initials || highScore.initials.length > 3) {
-        window.alert("Please enter a set of 1-3 characters for your intitials.")
+        window.alert("Please enter a set of 1-3 characters for your initials.")
         return getInitials();
     }
 };

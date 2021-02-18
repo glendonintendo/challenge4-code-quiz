@@ -141,19 +141,22 @@ let questions = [
 // generates and populates content for main element on landing page
 const createIntroEl = function() {
     let mainDivEl = document.createElement("div");
+    mainDivEl.className = "container-div"
     mainDivEl.innerHTML = `
-        <h2>Welcome to the Quizzinator</h2>
-        <h3>Test your skills. Compete With Friends. Destroy Your Enemies.</h3>
-        <p>In the quizzinator, you will be tested on your JavaScipt knowledge. Answer each question to reach the end and receive a high score!</p>
-        <h3>Rules:</h3>
-        <ul>
-            <li>There are 5 questions. You must complete each question to finish the round.</li>
-            <li>You have 120 seconds to finish the round.</li>
-            <li>15 seconds will be deducted from your time for each wrong answer you select.</li>
-            <li>Your high score will equal the amount of time left after completing all 5 questions.</li>
-            <li>Click 'Start Quiz' to begin your next trial.</li>
-        </ul>
-        <button class="btn" id="start-button" type="button">Start Quiz</button>
+        <h2 class='welcome'>Welcome to the Quizzinator</h2>
+        <h3 class='subtitle'>Test your skills. Compete With Friends. Destroy Your Enemies.</h3>
+        <p class='game-explainer'>In the quizzinator, you will be tested on your JavaScipt knowledge. Answer each question to reach the end and receive a high score!</p>
+        <div class='rules'>    
+            <h3 class='rules-title'>Rules:</h3>
+            <ul class='rules-list'>
+                <li>There are 5 questions. You must complete each question to finish the round.</li>
+                <li>You have 75 seconds to finish the round.</li>
+                <li>15 seconds will be deducted from your time for each wrong answer you select.</li>
+                <li>Your high score will equal the amount of time left after completing all 5 questions.</li>
+                <li>Click 'Start Quiz' to begin your next trial.</li>
+            </ul>
+            <button class="btn" id="start-button" type="button">Start Quiz</button>
+        </div>
     `;
     mainEl.appendChild(mainDivEl);
     mainEl.addEventListener("click", startQuizHandler);
@@ -190,13 +193,14 @@ const createQuestionEl = function() {
     chosenQuestionAnswers = shuffleArray(chosenQuestion.answers);
 
     let mainDivEl = document.createElement("div");
+    mainDivEl.className = "container-div"
     mainDivEl.innerHTML = `
-        <h2>Q${questionCounter + 1}: ${chosenQuestion.question}</h2>
+        <h2 class='question-text'>Q${questionCounter + 1}: ${chosenQuestion.question}</h2>
         <div class='answer-block'>
-            <button class='answer' id='0' type='button'>A: ${chosenQuestionAnswers[0].answerString}</button>
-            <button class='answer' id='1' type='button'>B: ${chosenQuestionAnswers[1].answerString}</button>
-            <button class='answer' id='2' type='button'>C: ${chosenQuestionAnswers[2].answerString}</button>
-            <button class='answer' id='3' type='button'>D: ${chosenQuestionAnswers[3].answerString}</button>
+            <button class='answer' id='0' type='button'>${chosenQuestionAnswers[0].answerString}</button>
+            <button class='answer' id='1' type='button'>${chosenQuestionAnswers[1].answerString}</button>
+            <button class='answer' id='2' type='button'>${chosenQuestionAnswers[2].answerString}</button>
+            <button class='answer' id='3' type='button'>${chosenQuestionAnswers[3].answerString}</button>
         </div>
     `;
     mainEl.appendChild(mainDivEl);
@@ -219,16 +223,17 @@ const answersHandler = function() {
 // generates footer content that ocntains next question button and answer explainer text of answer at index num of chosenQuestionAnswers
 const createFooterEl = function(num) {
     let footerDivEl = document.createElement("div");
+    footerDivEl.className = "footer-div";
     footerDivEl.innerHTML = `
         <p>${chosenQuestionAnswers[num].answerMessage}</p>
-        <button class='next' type='button'>Next</button>
+        <button class='btn next' type='button'>Next</button>
     `
     footerEl.appendChild(footerDivEl);
 
     if (chosenQuestionAnswers[num].isCorrectAnswer) {
         numberCorrect++;
     } else {
-        countdownTimer -= 10;
+        countdownTimer -= 15;
         if (countdownTimer <= 0) {
             return gameOver();
         }
@@ -276,9 +281,10 @@ const createEndEl = function() {
     
 
     let mainDivEl = document.createElement("div");
+    mainDivEl.className = "container-div end-div"
     mainDivEl.innerHTML = `
         <p>${highScoreString}\nHigh Score: ${highScore.score} set by ${highScore.initials}\nDo you want to have another go?</p>
-        <button class='restart' id='restart-button' type='button'>Play Again?</button>
+        <button class='restart btn' id='restart-button' type='button'>Play Again?</button>
     `
 
     mainEl.appendChild(mainDivEl);
@@ -338,9 +344,11 @@ const gameOver = function() {
     };
     removeMainContent();
     let mainDivEl = document.createElement("div");
+    mainDivEl.className = "container-div end-div";
     mainDivEl.innerHTML = `
-        <p>You ran out of time. Finish the quiz to join the completionists and see the high scores!</p>
-        <button class='restart' id='restart-button' type='button'>Play Again?</button>
+        <p>You ran out of time.</p>
+        <p>Finish the quiz to join the completionists and see the high scores!</p>
+        <button class='btn restart' id='restart-button' type='button'>Play Again?</button>
     `;
     mainEl.appendChild(mainDivEl);
     mainEl.addEventListener("click", restartQuizHandler);

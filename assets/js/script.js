@@ -274,7 +274,7 @@ const createEndEl = function() {
     if (!highScore.score || countdownTimer > highScore.score) {
         getInitials();
         highScore.score = countdownTimer;
-        highScoreString = `<p>Congratulations! You got the high score of ${countdownTimer} with ${numberCorrect} correct answers.This will surely make history!</p>`;
+        highScoreString = `<p>Congratulations! You got the high score of ${countdownTimer} with ${numberCorrect} correct answers. This will surely make history!</p>`;
     } else if (highScore.score > countdownTimer) {
         highScoreString = `Congratulations on finishing with ${numberCorrect} correct. Unfortunately, you did not get the high score.`;
     }
@@ -318,6 +318,7 @@ const shuffleArray = function(arr) {
     return arr;
 };
 
+// decrements timer
 const countdown = function() {
     countdownTimer--;
     reportTimer();
@@ -326,18 +327,22 @@ const countdown = function() {
     }
 };
 
+// starts the timer
 const startTimer = function() {
     interval = setInterval(countdown, 1000);
 };
 
+// stops the timer
 const stopTimer = function() {
     clearInterval(interval);
 };
 
+// reports timer to timer div
 const reportTimer = function() {
     document.getElementById("timer").innerHTML = countdownTimer;
 };
 
+// runs if timer reaches 0; ends the game; creates and displays end game content
 const gameOver = function() {
     stopTimer();
     document.getElementById("timer").innerHTML = "";
@@ -356,6 +361,7 @@ const gameOver = function() {
     mainEl.addEventListener("click", restartQuizHandler);
 };
 
+// gets users intials if they get high score; validates that initials are between 1-3 characters
 const getInitials = function() {
     highScore.initials = window.prompt(`Congratulations on finishing with the high score of ${countdownTimer}.\nPlease enter your intials to be memorialized for your heroic performance.`);
     if (!highScore.initials || highScore.initials.length > 3) {
@@ -364,4 +370,5 @@ const getInitials = function() {
     }
 };
 
+// after loading all of the DOM, creates intro content
 document.addEventListener('DOMContentLoaded', createIntroEl());

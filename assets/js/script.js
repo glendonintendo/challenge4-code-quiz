@@ -12,126 +12,126 @@ let highScore = {initials: undefined, score: 0};
 // object containing information for questions including question string, answer strings, and response message
 let questions = [
     {
-        question: "This is the question text for question 1", 
+        question: "Which conditional would not evaluate to true?", 
         answers: [
             {
-                answerString: "This is the correct answer for question 1",
-                answerMessage: "Good job on getting question 1 correct",
+                answerString: "(10 === 10 && 4 + 3 !== 7)",
+                answerMessage: "Good job! && means that both sides of the conditional must be true in order for the entire conditional to evaluate to true. Since 4+3!=7 is false, the entire conditional evaluates to false.",
                 isCorrectAnswer: true
             },
             {
-                answerString: "This is the first wrong answer for question 1",
-                answerMessage: "You chose the first wrong answer for question 1",
+                answerString: "(10)",
+                answerMessage: "That is incorrect. 10 is a truthy value. Common falsy values in JavaScript include false, 0, -0, \"\", null, undefined, and NaN. Most other values will evaluate to true on their own.",
                 isCorrectAnswer: false
             },
             {
-                answerString: "This is the second wrong answer for question 1",
-                answerMessage: "You chose the second wrong answer for question 1",
+                answerString: "(10 === 8 || 5 + 5 === 10)",
+                answerMessage: "That is incorrect. This expression evaluates to true because 5+5===10 evaluates to true and the or operator (||) evaluates to true if either side of the or statement evaluate to true.",
                 isCorrectAnswer: false
             },
             {
-                answerString: "This is the third wrong answer for question 1",
-                answerMessage: "You chose the third wrong answer for question 1",
+                answerString: "(5 !== 5 + 1 && 1 + 1 !== 3)",
+                answerMessage: "That is incorrect. Both sides of the && evaluate to true so the whole conditional evaluates to true.",
                 isCorrectAnswer: false
             }
         ]
     },
     {
-        question: "This is the question text for question 2", 
+        question: "What is the correct way to access the element 'elephant' in the following array?<br />let animalArray = ['tiger', 'lion', 'elephant', 'zebra']", 
         answers: [
             {
-                answerString: "This is the correct answer for question 2",
-                answerMessage: "Good job on getting question 2 correct",
+                answerString: "animalArray[2]",
+                answerMessage: "Correct! 'elephant' is located at index 2 of animalArray.",
                 isCorrectAnswer: true
             },
             {
-                answerString: "This is the first wrong answer for question 2",
-                answerMessage: "You chose the first wrong answer for question 2",
+                answerString: "animalArray[3]",
+                answerMessage: "Incorrect. 'elephant' is located at index 2 of animalArray.",
                 isCorrectAnswer: false
             },
             {
-                answerString: "This is the second wrong answer for question 2",
-                answerMessage: "You chose the second wrong answer for question 2",
+                answerString: "animalArray{3}",
+                answerMessage: "Incorrect. Array elements are called at an index through square braces []. Also, 'elephant' is located at index 2 of animalArray.",
                 isCorrectAnswer: false
             },
             {
-                answerString: "This is the third wrong answer for question 2",
-                answerMessage: "You chose the third wrong answer for question 2",
+                answerString: "animalArray.3",
+                answerMessage: "Incorrect. The correct syntax for getting an element of an array is array[index]. What index would 'elephant' be at?",
                 isCorrectAnswer: false
             }
         ]
     },
     {
-        question: "This is the question text for question 3", 
+        question: "Which function would not log 'This works!' when called?", 
         answers: [
             {
-                answerString: "This is the correct answer for question 3",
-                answerMessage: "Good job on getting question 3 correct",
+                answerString: "const thisIsAFunction() = {console.log('This works!');};",
+                answerMessage: "Correct! This is not correct syntax for defining a function.",
                 isCorrectAnswer: true
             },
             {
-                answerString: "This is the first wrong answer for question 3",
-                answerMessage: "You chose the first wrong answer for question 3",
+                answerString: "function thisIsAFunction() {console.log('This works!);};",
+                answerMessage: "Incorrect. This is correct syntax for a function declaration.",
                 isCorrectAnswer: false
             },
             {
-                answerString: "This is the second wrong answer for question 3",
-                answerMessage: "You chose the second wrong answer for question 3",
+                answerString: "const thisIsAFunction = () => console.log('This works!);",
+                answerMessage: "Incorrect. This is correct arrow function syntax.",
                 isCorrectAnswer: false
             },
             {
-                answerString: "This is the third wrong answer for question 3",
-                answerMessage: "You chose the third wrong answer for question 3",
+                answerString: "const thisIsAFunction = function() {console.log('This works!');};",
+                answerMessage: "Incorrect. This is correct function expression syntax.",
                 isCorrectAnswer: false
             }
         ]
     },
     {
-        question: "This is the question text for question 4", 
+        question: "Which method of the window object would create a popup with a textbox entry?", 
         answers: [
             {
-                answerString: "This is the correct answer for question 4",
-                answerMessage: "Good job on getting question 4 correct",
+                answerString: "window.prompt('This is it!');",
+                answerMessage: "Correct! The .prompt method creates a popup witha text entry and returns the value of the user's input.",
                 isCorrectAnswer: true
             },
             {
-                answerString: "This is the first wrong answer for question 4",
-                answerMessage: "You chose the first wrong answer for question 4",
+                answerString: "window.alert('I think this one is correct.');",
+                answerMessage: "Incorrect. The .alert method shows the message passed as an argument, but the user has no option to input text.",
                 isCorrectAnswer: false
             },
             {
-                answerString: "This is the second wrong answer for question 4",
-                answerMessage: "You chose the second wrong answer for question 4",
+                answerString: "window.confirm('This is definitely the one.');",
+                answerMessage: "Incorrect. The .confirm method gives the option of 'OK' and 'Cancel' but does not allow text entry.",
                 isCorrectAnswer: false
             },
             {
-                answerString: "This is the third wrong answer for question 4",
-                answerMessage: "You chose the third wrong answer for question 4",
+                answerString: "window.getUserInput('This looks promising.');",
+                answerMessage: "Incorrect. The .getUserInput method is not a native method for the window object.",
                 isCorrectAnswer: false
             }
         ]
     },
     {
-        question: "This is the question text for question 5", 
+        question: "Which statement is true about for loops?", 
         answers: [
             {
-                answerString: "This is the correct answer for question 5",
-                answerMessage: "Good job on getting question 5 correct",
+                answerString: "for loops are appropriate when looping a predetermined number of times.",
+                answerMessage: "Correct. You always want to set conditionals that tell the for loop to stop iterating when specific conditions are met.",
                 isCorrectAnswer: true
             },
             {
-                answerString: "This is the first wrong answer for question 5",
-                answerMessage: "You chose the first wrong answer for question 5",
+                answerString: "for loops always run an unknown number of times.",
+                answerMessage: "Incorrect. A for loop will run a predetermined number of times depending on the conditions set for them.",
                 isCorrectAnswer: false
             },
             {
-                answerString: "This is the second wrong answer for question 5",
-                answerMessage: "You chose the second wrong answer for question 5",
+                answerString: "for loops can never result in an infinite loop.",
+                answerMessage: "Incorrect. Infinite loops can occur when the conditions of the for loop are written in such a way that the end condition is never met.",
                 isCorrectAnswer: false
             },
             {
-                answerString: "This is the third wrong answer for question 5",
-                answerMessage: "You chose the third wrong answer for question 5",
+                answerString: "for loops always count from 0 upwards.",
+                answerMessage: "Incorrect. A for loop can increment starting from any number, and even increment downwards!",
                 isCorrectAnswer: false
             }
         ]
@@ -272,18 +272,20 @@ const createEndEl = function() {
 
     let highScoreString;
     if (!highScore.score || countdownTimer > highScore.score) {
-        highScore.initials = window.prompt(`Congratulations on finishing with the high score of ${countdownTimer}.\nPlease enter your intials to be memorialized for your heroic performance.`);
+        getInitials();
         highScore.score = countdownTimer;
-        highScoreString = `<p>Congratulations! You got the high score of ${countdownTimer} with ${numberCorrect} correct answers.\nThis will surely make history!</p>`;
+        highScoreString = `<p>Congratulations! You got the high score of ${countdownTimer} with ${numberCorrect} correct answers.This will surely make history!</p>`;
     } else if (highScore.score > countdownTimer) {
-        highScoreString = `Congratulations on finishing with ${numberCorrect} correct. Unfortunately, you did not get the highScore.`;
+        highScoreString = `Congratulations on finishing with ${numberCorrect} correct. Unfortunately, you did not get the high score.`;
     }
     
 
     let mainDivEl = document.createElement("div");
     mainDivEl.className = "container-div end-div"
     mainDivEl.innerHTML = `
-        <p>${highScoreString}\nHigh Score: ${highScore.score} set by ${highScore.initials}\nDo you want to have another go?</p>
+        <p>${highScoreString}</p><br/>
+        <p>High Score: ${highScore.score} set by ${highScore.initials}</p><br />
+        <p>Do you want to have another go?</p>
         <button class='restart btn' id='restart-button' type='button'>Play Again?</button>
     `
 
@@ -354,4 +356,12 @@ const gameOver = function() {
     mainEl.addEventListener("click", restartQuizHandler);
 };
 
-createIntroEl();
+const getInitials = function() {
+    highScore.initials = window.prompt(`Congratulations on finishing with the high score of ${countdownTimer}.\nPlease enter your intials to be memorialized for your heroic performance.`);
+    if (!highScore.initials || highScore.initials.length > 3) {
+        window.alert("Please enter a set of 1-3 characters for your intitials.")
+        return getInitials();
+    }
+};
+
+document.addEventListener('DOMContentLoaded', createIntroEl());

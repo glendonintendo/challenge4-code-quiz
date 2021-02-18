@@ -1,16 +1,23 @@
 # Code Quiz <!-- omit in toc -->
 - [Description](#description)
-- [Technologies Used](#technologies-used)
-- [Gotcha Moments](#gotcha-moments)
 - [Demo](#demo)
 - [Test Conditions and Grading Criteria](#test-conditions-and-grading-criteria)
   - [User Story](#user-story)
   - [Acceptance Criteria](#acceptance-criteria)
   - [Grading Requirements](#grading-requirements)
 ## Description
-## Technologies Used
-## Gotcha Moments
+In this assignment, I was tasked with creating a quiz application. The application would dynamically change the content of the page without reloading the webpage.
+
+I was able to practice many of the skills that I learned in the modules (and then some) with this project. Conceptually I think that accessing different objects and their methods is pretty easy, but with the new APIs we were using I found the information difficult to latch onto. I would have to keep referencing the module to ensure that I was using the correct syntax or ensure that the method I was calling did what I thought it did.
+
+This was the first project I have done that involved actually writing my own HTML, CSS, and JS all the way through. I found this to be an invaluable refresher of CSS and HTML concepts that I did not look at for a few weeks.
 ## Demo
+The live application can be deployed here: [The Quizzinator](https://glendonintendo.github.io/challenge4-code-quiz/)
+
+Demo images of the deployed application are below:
+![Main Page](assets/images/screenshot-main-page.png)
+![Question Page](assets/images/screenshot-question-page.png)
+![End Page](assets/images/screenshot-end-page.png)
 ## Test Conditions and Grading Criteria
 ### User Story
 ```
@@ -34,24 +41,24 @@ THEN I can save my initials and score
 ```
 ### Grading Requirements
 #### Technical Acceptance Criteria - 40% <!-- omit in toc -->
-- [ ] Has a timer that starts when the start button is clicked
-- [ ] Presents a new questions on starting and when previous question is answered
-- [ ] When an answer is incorrect, time is removed from the clock
-- [ ] Game ends when the timer reaches 0 or all questions are answered
-- [ ] When game ends, user is given a score equal to the time left on the clock
-- [ ] When game ends, user is given option to save initials with their high score
+- [x] Has a timer that starts when the start button is clicked
+- [x] Presents a new questions on starting and when previous question is answered
+- [x] When an answer is incorrect, time is removed from the clock
+- [x] Game ends when the timer reaches 0 or all questions are answered
+- [x] When game ends, user is given a score equal to the time left on the clock
+- [x] When game ends, user is given option to save initials with their high score
 #### Deployment - 32% <!-- omit in toc -->
-- [ ] Application deployed at live URL
-- [ ] Application loads with no errors
-- [ ] Application GitHub URL submitted
-- [ ] GitHub repository contains application code
+- [x] Application deployed at live URL
+- [x] Application loads with no errors
+- [x] Application GitHub URL submitted
+- [x] GitHub repository contains application code
 #### Application Quality - 15% <!-- omit in toc -->
-- [ ] Application user experience is intuitive and easy to navigate
-- [ ] Application user interface style is clean and polished
-- [ ] Application resembles the mock-up functionality provided in the Challenge instructions
+- [x] Application user experience is intuitive and easy to navigate
+- [x] Application user interface style is clean and polished
+- [x] Application resembles the mock-up functionality provided in the Challenge instructions
 #### Repository Quality  - 13% <!-- omit in toc -->
-- [ ] Repository has a unique name
-- [ ] Repository follows best practices for file structure and naming conventions
-- [ ] Repository follows best practices for class/id naming conventions, indentation, high-quality comments, etc.
-- [ ] Repository contains multiple dsecriptive commit messages
-- [ ] Repository contains a high-quality README file with description, screenshot, and link to deployed application
+- [x] Repository has a unique name
+- [x] Repository follows best practices for file structure and naming conventions
+- [x] Repository follows best practices for class/id naming conventions, indentation, high-quality comments, etc.
+- [x] Repository contains multiple dsecriptive commit messages
+- [x] Repository contains a high-quality README file with description, screenshot, and link to deployed application

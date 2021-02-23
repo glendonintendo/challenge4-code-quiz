@@ -35,7 +35,7 @@ header, footer {
     font-size: 1.5rem;
     padding: 10px;
     border-radius: 24px;
-    margin: 10px auto;
+    margin: 10px 10px;
     width: 250px;
 }
 
@@ -169,4 +169,23 @@ footer {
     padding: 10px 0;
     font-size: 1.5rem;
     text-align: center;
+}
+
+/* styles for high score page */
+.score-div {
+    text-align: center;
+    width: 40%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.score-div h2 {
+    font-size: 2rem;
+    width: 100%;
+}
+
+.score-div span {
+    width: 40%;
+    font-size: 1.75rem;
+    margin: 10px 0;
 }

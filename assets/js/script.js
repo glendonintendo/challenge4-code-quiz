@@ -7,7 +7,7 @@ let chosenAnswer;
 let numberCorrect = 0;
 let countdownTimer = 75;
 let interval;
-let highScore = {initials: undefined, score: 0};
+let highScore = [{initials: "GRE", score: 50}, {initials: "ALD", score: 40}, {initials: "DJE", score: 30}, {initials: "JRB", score: 20}, {initials: "JNJ", score: 10}];
 
 // object containing information for questions including question string, answer strings, and response message
 let questions = [
@@ -156,10 +156,12 @@ const createIntroEl = function() {
                 <li>Click 'Start Quiz' to begin your next trial.</li>
             </ul>
             <button class="btn" id="start-button" type="button">Start Quiz</button>
+            <button class="btn" id="score-button" type="button">High Scores</button>
         </div>
     `;
     mainEl.appendChild(mainDivEl);
     mainEl.addEventListener("click", startQuizHandler);
+    mainEl.addEventListener("click", highScoreHandler);
 };
 
 // handles function calls on click of start button on landing page
@@ -169,6 +171,7 @@ const startQuizHandler = function() {
     if (targetEl.matches("#start-button")) {
         removeMainContent();
         mainEl.removeEventListener("click", startQuizHandler);
+        mainEl.removeEventListener("click", highScoreHandler);
         shuffleArray(questions);
         startTimer();
         createQuestionEl();
@@ -269,13 +272,35 @@ const createEndEl = function() {
         highScore = JSON.parse(loadHighScore);
     }
 
+    highScore = highScore.sort((a,b) => (a.score < b.score) ? 1 : -1);
+
+    let gotHighScore = false;
+    for (let i = 0; i < highScore.length; i++) {
+        if (countdownTimer > highScore[i].score) {
+            gotHighScore = true;
+            break;
+        }
+    }
 
     let highScoreString;
-    if (!highScore.score || countdownTimer > highScore.score) {
-        getInitials();
-        highScore.score = countdownTimer;
-        highScoreString = `<p>Congratulations! You got the high score of ${countdownTimer} with ${numberCorrect} correct answers. This will surely make history!</p>`;
-    } else if (highScore.score > countdownTimer) {
+    if (gotHighScore) {
+        // gets users initials if they get high score; validates that initials are between 1-3 characters
+        const getInitials = function() {
+            let initials = window.prompt(`Congratulations on finishing with the high score of ${countdownTimer}.\nPlease enter your initials to be memorialized for your heroic performance.`);
+            if (!initials || initials.length > 3) {
+                window.alert("Please enter a set of 1-3 characters for your initials.")
+                return getInitials();
+            } else {
+                return initials;
+            }
+        };
+        
+        let userInitials = getInitials();
+
+        let userHighScore = countdownTimer;
+        highScore.splice(4,1, {initials: userInitials, score: userHighScore});
+        highScoreString = `<p>Congratulations! You got a high score of ${userHighScore} with ${numberCorrect} correct answers. This will surely make history!</p>`;
+    } else {
         highScoreString = `Congratulations on finishing with ${numberCorrect} correct. Unfortunately, you did not get the high score.`;
     }
     
@@ -284,14 +309,15 @@ const createEndEl = function() {
     mainDivEl.className = "container-div end-div"
     mainDivEl.innerHTML = `
         <p>${highScoreString}</p><br/>
-        <p>High Score: ${highScore.score} set by ${highScore.initials}</p><br />
         <p>Do you want to have another go?</p>
         <button class='restart btn' id='restart-button' type='button'>Play Again?</button>
+        <button class='btn' id='score-button' type='button'>HighScores</button>
     `
 
     mainEl.appendChild(mainDivEl);
     localStorage.setItem("highScore", JSON.stringify(highScore));
     mainEl.addEventListener("click", restartQuizHandler);
+    mainEl.addEventListener("click", highScoreHandler);
 };
 
 // handler for restart quiz button
@@ -300,6 +326,8 @@ const restartQuizHandler = function() {
 
     if (targetEl.matches("#restart-button")) {
         removeMainContent();
+        mainEl.removeEventListener("click", restartQuizHandler);
+        mainEl.removeEventListener("click", highScoreHandler);
         createIntroEl();
         questionCounter = 0;
         numberCorrect = 0;
@@ -354,21 +382,50 @@ const gameOver = function() {
     mainDivEl.className = "container-div end-div";
     mainDivEl.innerHTML = `
         <p>You ran out of time.</p>
-        <p>Finish the quiz to join the completionists and see the high scores!</p>
+        <p>Finish the quiz to join the completionists and potentially join the high scores!</p>
         <button class='btn restart' id='restart-button' type='button'>Play Again?</button>
+        <button class='btn' id='score-button' type='button'>HighScores</button>
+
     `;
     mainEl.appendChild(mainDivEl);
     mainEl.addEventListener("click", restartQuizHandler);
+    mainEl.addEventListener("click", highScoreHandler);
 };
 
-// gets users initials if they get high score; validates that initials are between 1-3 characters
-const getInitials = function() {
-    highScore.initials = window.prompt(`Congratulations on finishing with the high score of ${countdownTimer}.\nPlease enter your initials to be memorialized for your heroic performance.`);
-    if (!highScore.initials || highScore.initials.length > 3) {
-        window.alert("Please enter a set of 1-3 characters for your initials.")
-        return getInitials();
+// handler for the high score button
+const highScoreHandler = function() {
+    let targetEl = event.target;
+
+    if (targetEl.matches("#score-button")) {
+        removeMainContent();
+        mainEl.removeEventListener("click", startQuizHandler);
+        mainEl.removeEventListener("click", restartQuizHandler);
+        mainEl.removeEventListener("click", highScoreHandler);
+        createHighScoreEl();
     }
-};
+}
+
+// creates a list of high scores with initials and populates it to the page
+const createHighScoreEl = function() {
+    let loadHighScore = localStorage.getItem("highScore");
+    if (loadHighScore) {
+        highScore = JSON.parse(loadHighScore);
+    }
+
+    highScore = highScore.sort((a,b) => (a.score < b.score) ? 1 : -1);
+
+    let mainDivEl = document.createElement("div");
+    mainDivEl.className = "container-div score-div"
+    mainDivEl.innerHTML = "<h2>High Scores</h2>";
+    for(let element of highScore) {
+        mainDivEl.innerHTML += `<span>${element.initials}</span><span>${element.score}</span>`
+    }
+    mainDivEl.innerHTML += "<button class='restart btn' id='restart-button' type='button'>Play Again?</button>"
+
+    mainEl.appendChild(mainDivEl);
+    localStorage.setItem("highScore", JSON.stringify(highScore));
+    mainEl.addEventListener("click", restartQuizHandler);
+}
 
 // after loading all of the DOM, creates intro content
 document.addEventListener('DOMContentLoaded', createIntroEl());
